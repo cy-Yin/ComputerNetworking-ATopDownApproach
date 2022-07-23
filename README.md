@@ -9,3 +9,4 @@
 - `郑铨-中科大\` 文件夹中为**上课ppt**
 - `Supplements-ComputerNetworking-ATopDownApproach-7th-ed\` 文件夹中为计算机网络（自顶向下方法）第七版的**书籍补充材料**。包括Wireshark实验指导和PPT
 - `Log_of_ComputerNetworking-ATopDownApproach_7th\` 文件夹中为**学习笔记**，分章节记录
+- `ComputerNetworking_ ATopDownApproach_7th.pdf` 为参考书籍——《计算机网络——自顶向下方法》英文第7版
