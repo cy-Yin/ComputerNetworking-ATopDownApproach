@@ -267,8 +267,11 @@ Web是一种应用，HTTP是支持Web应用的协议。
 - 通过**URL**（通用资源定位符）对每个对象进行引用
     - **访问协议（HTTP、FTP等等），用户名，口令字，端口等；**
     - 匿名访问时可以不提供用户名和口令
-- URL格式:
-$$\underbrace{Prot}_{协议名}://\underbrace{user:psw}_{用户:口令}@\underbrace{www.someSchool.edu}_{主机名}:\underbrace{port}_{端口}/\underbrace{someDept/pic.gif}_{路径名}$$
+- URL格式:    
+
+$$Prot://user:psw@www.someSchool.edu:port/someDept/pic.gif$$
+
+其中 Prot 为 协议名，user:psw 为 用户:口令，www.someSchool.edu 为 主机名，port 为 端口，someDept/pic.gif 为 路径名
 
 HTTP（超文本传输协议）概况
 - Web的应用层协议
@@ -345,7 +348,7 @@ HTTP请求报文
 - 两种类型的HTTP报文：**请求**、**响应**
 - HTTP请求报文：
     - ASCII（人能阅读）
-    ```HTTP
+    ```
     # 请求行（GET，POST，HEAD命令）
     GET /somedir/page.html HTTP/1.1     # 第一个是接口请求：GET是请求行为；POST是上载行为；HEAD是只取HTTP头部，搜索引擎从头部提取描述信息建立索引或用于维护。第二个是目录和文件，主机名因为已经建立连接所以可以忽略。第三个是协议和版本号
     # 首部行  
@@ -385,7 +388,7 @@ HTTP请求报文：通用格式
         - 删除URL字段规定的文件
 
 HTTP响应报文
-```HTTP
+```
 # 状态行（协议版本、状态码和相应状态信息）
 HTTP/1.1 200 OK
 # 首部行
@@ -499,17 +502,17 @@ Web缓存（代理服务器）
 条件GET方法(conditional-GET)
 - 目标：如果缓存器中的对象拷贝是最新的，就不要封装并发送整个对象，只用发送头部
 - 缓存器：在HTTP请求增加一个头部，指定缓存拷贝的日期
-    ```HTTP
+    ```
     If-modified-since: 
         <date>
     ```
 - 服务器：
     - 如果缓存拷贝陈旧没有变化，则响应报文没包含对象：
-        ```HTTP
+        ```
         HTTP/1.0 304 Not Modified
         ```
     - 如果缓存拷贝的原对象已经被修改，则响应报文包含对象：
-        ```HTTP
+        ```
         HTTP/1.0 200 OK
         <data>
         ```
@@ -578,7 +581,7 @@ EMail: 邮件服务器
 > 5) Bob的邮件服务器将邮件放到Bob的邮箱
 > 6) Bob调用他的用户代理从他自己的邮件服务器**拉取**并阅读邮件（POP3、IMAP、HTTP等协议）
 > 
-> Alice的用户代理 --发送--> Alice的邮件服务器 --传输--> Bob的邮件服务器 --拉取--> Bob的用户代理
+> Alice的用户代理 --发送--> Alice的邮件服务器 --传输--> Bob的邮件服务器 --拉取--> Bob的用户代理    
 > **“两推一拉”**
 
 EMail：SMTP [RFC 2821]
@@ -950,27 +953,27 @@ DNS协议、报文
     - VoIP(Skype)
 
 文件分发：C/S vs P2P
-- 问题：从一台服务器分发文件（大小$F$）到$N$个peer需要多少时间？
+- 问题：从一台服务器分发文件（大小 $F$ ）到 $N$ 个peer需要多少时间？
     - Peer节点上下载能力是有限的资源
-    - 不妨假设：每个客户端上载带宽为$u_i$，下载带宽为$d_i$，服务器的上载带宽为$u_s$
+    - 不妨假设：每个客户端上载带宽为 $u_i$ ，下载带宽为 $d_i$ ，服务器的上载带宽为 $u_s$
 - 文件分发时间：C/S模式
-    - 服务器传输：都是由服务器发送给peer，服务器必须顺序传输（上载）$N$个文件拷贝:
-        - 发送$1$个copy：$F/u_s$ 
-        - 则发送$N$个copy：$N*F/u_s$
+    - 服务器传输：都是由服务器发送给peer，服务器必须顺序传输（上载） $N$ 个文件拷贝:
+        - 发送 $1$ 个copy： $F/u_s$ 
+        - 则发送 $N$ 个copy： $N*F/u_s$
     - 客户端：每个客户端必须下载一个文件拷贝 注：C/S模式都是通过服务器的服务来获取文件，所以每个客户端的上载能力无关紧要
         - $d_{min}$ 为客户端最小的下载速率
-        - 下载带宽最小的客户端下载的时间：$F/d_{min}$
-    - 则采用C-S方法将一个$F$大小的文件分发给$N$个客户端耗时： $$D_{c-s} \geq \max(N*F/u_s, F/d_{min})$$ 随着$N$线性增长
+        - 下载带宽最小的客户端下载的时间： $F/d_{min}$
+    - 则采用C-S方法将一个$F$大小的文件分发给$N$个客户端耗时： $$D_{c-s} \geq \max(N*F/u_s, F/d_{min})$$ 随着 $N$ 线性增长
 - 文件分发时间：P2P模式
     - 服务器传输：最少需要上载一份拷贝
-        - 发送$1$个拷贝的时间：$F/u_s$
+        - 发送 $1$ 个拷贝的时间： $F/u_s$
     - 客户端：每个客户端必须下载一个拷贝
-        - 最小下载带宽客户单耗时：$F/d_{min}$
-    - 客户端：所有客户端总体下载量：$N*F$
-        - 最大上载带宽是：$u_s+\sum\limits_{i=1}^{N}{u_i}$
+        - 最小下载带宽客户单耗时： $F/d_{min}$
+    - 客户端：所有客户端总体下载量： $N*F$
+        - 最大上载带宽是： $u_s+\sum\limits_{i=1}^{N}{u_i}$
         - 除了服务器可以上载，其他所有的peer节点都可以上载
-    - 则采用P2P方法将一个$F$大小的文件分发给$N$个客户端耗时： $$D_{P2P} \geq \max(F/u_s, F/d_{min}, N*F/(u_s + \sum{u_i}))$$  分子随着$N$线性变化，每个节点需要下载，整体下载量随着$N$增大…… 分母也是如此，随着peer节点的增多每个peer也带了服务能力  
-- 例子：客户端上载速率为$u$，当 $F/u = 1 hour$ 时，$u_s = 10*u$，$d_{min} \geq u_s$
+    - 则采用P2P方法将一个 $F$ 大小的文件分发给 $N$ 个客户端耗时： $$D_{P2P} \geq \max(F/u_s, F/d_{min}, N*F/(u_s + \sum{u_i}))$$  分子随着 $N$ 线性变化，每个节点需要下载，整体下载量随着 $N$ 增大…… 分母也是如此，随着peer节点的增多每个peer也带了服务能力  
+- 例子：客户端上载速率为 $u$ ，当 $F/u = 1 hour$ 时， $u_s = 10*u$ ， $d_{min} \geq u_s$
 
     <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210723173824123.png" style="zoom:80%" />
 
@@ -1227,7 +1230,8 @@ TCP套接字编程的工作流程
 ```c
 '''IP地址和port捆绑关系的数据结构（标识进程的端节点）'''
 
-struct sockaddr_in{
+struct sockaddr_in
+{
     short sin_family; //AF_INET地址簇，给一个常量代表TCP/IP的协议族
     unsigned short sin_port; //port
     struct in_addr sin_addr; //IP address, unsigned long
@@ -1245,7 +1249,8 @@ struct sockaddr_in{
 ```c
 '''域名和IP地址的数据结构'''
 
-struct hostent{
+struct hostent
+{
     char *h_name;
     char **h_aliases;
     int h_addrtype;
