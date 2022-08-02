@@ -1453,13 +1453,13 @@ UDP传送的数据可能乱序，也可能丢失
 >         sad.sin_addr.s_addr = INADDR_ANY; // set the local IP address 
 >         sad.sin_port = htons((unsigned short)port); // set the port number
 >         bind(serverSocket, (struct sockaddr *) &sad, sizeof(sad));
->     while(1) 
+>     while(1):
 >     { 
->         n=recvfrom(serverSocket, clientSentence, sizeof(clientSentence), 0, (struct sockaddr *) &cad, &addr_len); // Receive messages from clients 
+>         n = recvfrom(serverSocket, clientSentence, sizeof(clientSentence), 0, (struct sockaddr *) &cad, &addr_len); // Receive messages from clients 
 >         
 >         /* capitalize Sentence and store the result in capitalizedSentence */
 >         
->         n=sendto(serverSocket, capitalizedSentence, strlen(capitalizedSentence)+1, (struct sockaddr *) &cad, &addr_len); // Write out the result to socket
+>         n = sendto(serverSocket, capitalizedSentence, strlen(capitalizedSentence)+1, (struct sockaddr *) &cad, &addr_len); // Write out the result to socket
 >     } // End of while loop, loop back and wait for another client connection
 > }
 > 
