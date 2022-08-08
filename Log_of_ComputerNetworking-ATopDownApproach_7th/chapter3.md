@@ -189,13 +189,13 @@ rdt在应用层、传输层和数据链路层都很重要，是网络Top 10问�
 我们将在本层进行如下工作：
 - 渐增式地开发可靠数据传输协议(rdt)的发送方和接收方（渐增式：从下层可靠、不丢失开始，一步步去掉假设，使下层变得越来越不可靠，从而完善rdt协议）
 - 只考虑单向数据传输
-    - 但控制信息是双向流动的！（有一些反馈机制
+    - 但控制信息是双向流动的！（有一些反馈机制）
 - 双向的数据传输问题实际上是2个单向数据传输问题的综合（两个过程具有对称性）
 - 使用有限状态机(FSM)来描述发送方和接收方（有限状态机实际上就是描述协议如何工作的一个形式化的描述方案，比语言更加简洁易懂、便于检查）
 
 状态：在该状态时，下一个状态只由下一个事件唯一确定。    
 节点之间有个状态变迁的边(edge)连在一起，代表状态1变成状态2在变迁的这条有限边上有标注。    
-标注有分子和分母：$\frac{引起状态变化的事件}{状态变迁时}$
+标注有分子和分母： $\frac{引起状态变化的事件}{状态变迁时采取的动作}$
 
 下面进行渐进式开发： Rdt1.0 --> Rdt2.0 --> Rdt2.1 --> Rdt2.2 --> Rdt 3.0
 
@@ -283,7 +283,7 @@ Rdt3.0：具有比特差错和分组丢失的信道
         - 序列号
         - ACK
         - 重传
-- 方法：发送方等待ACK一段合理的时间（链路层的timeout时间是确定的，传输层timeout时间是适应式的（需要动态地计算）
+- 方法：发送方等待ACK一段合理的时间（链路层的timeout时间是确定的，传输层timeout时间是适应式的（需要动态地计算））
     - 发送端**超时重传**：如果到时没有收到ACK->重传
     - 问题：如果分组（或ACK）只是被延迟了：
         - 重传将会导致数据重复，但利用序列号已经可以处理这个问题
@@ -303,7 +303,7 @@ Rdt3.0的性能
     - 链路容量比较大，一次发一个PDU的不能够充分利用链路的传输能力（信道明明可容纳很多很多包，每次却只有一个包处于信道中，信道利用率极低）
 
 > 例：   
-> $1Gbps$ 的链路，$15ms$ 端-端传播延时（ $RTT = 30ms$ ），分组大小为 $1kB = 1000Bytes = 8000bits$ ：   
+> $1Gbps$ 的链路， $15ms$ 端-端传播延时（ $RTT = 30ms$ ），分组大小为 $1kB = 1000Bytes = 8000bits$ ：   
 > $$T_{transmit} = \frac{L(分组长度, 比特)}{R(传输速率, bps)} = \frac{8kb/pkt}{10^9 b/sec} = 8\mu{s}$$     
 > $$U_{sender} = \frac{L/R}{RTT+L/R} = \frac{{0.008}}{30.008} = 0.00027$$
 > - $U_{sender}$ ：利用率 – 忙于发送的时间比例
@@ -338,6 +338,7 @@ Rdt3.0的性能
 | = 1 | = 1 | stop-wait |
 | > 1 | = 1 | GBN       |
 | > 1 | > 1 | SR        |
+
 其中 sw(sending window) > 1 时也称为流水线协议
 
 几个概念：
@@ -448,9 +449,12 @@ GBN协议和SR协议的异同
         - 当超时定时器到时，只是重发到时的未确认分组
 
 GBN的运行
-    <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210725191547108.png" style="zoom:80%" />
+   
+<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210725191547108.png" style="zoom:80%" />
+
 选择重传SR的运行
-    <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210725191937619.png" />
+
+<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210725191937619.png" />
 
 选择重传SR
 - 接收方对每个正确接收的分组，分别发送ACKn（非累积确认）
@@ -552,7 +556,7 @@ TCP往返延时(RTT)和超时
     - SampleRTT会变化，因此估计的RTT应该比较平滑
         - 对几个最近的测量值求平均，而不是仅用当前的SampleRTT
 - RTT不是一个固定的值，而是一个适应式的测量。由于每个分组经历不一样，严重依赖于网络状况，则SampleRTT变化非常大，用SampleRTT建立超时定时器不合理，需要用SampleRTT的平均值EstimatedRTT（滤波算法）
-    - $[EstimatedRTT] = (1-\alpha)*[(previous)EstimatedRTT] + \alpha*SampleRTT$
+    - $[EstimatedRTT] = (1-\alpha) * [(previous)EstimatedRTT] + \alpha * SampleRTT$
     - 指数加权移动平均
     - 过去样本的影响呈指数衰减
     - 推荐值： $\alpha = 0.125$
@@ -564,7 +568,7 @@ TCP往返延时(RTT)和超时
     - EstimatedRTT变化大（方差大）
         - 较大的安全边界时间
     - SampleRTT会偏离EstimatedRTT多远：
-        - $[DevRTT] = (1-\alpha)*[(previous)DevRTT] + \alpha*|SampleRTT-EstimatedRTT|$
+        - $[DevRTT] = (1-\alpha) * [(previous)DevRTT] + \alpha * |SampleRTT-EstimatedRTT|$
         - 推荐值： $\alpha = 0.25$
 - 超时时间间隔设置为：
     - $TimeoutInterval = EstimatedRTT + 4*DevRTT$
@@ -603,7 +607,7 @@ TCP发送方事件：
 
 TCP：重传
 
-<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726081314233.png" style="zoom:93.7%"/><img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726082045415.png" />
+<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726081314233.png" height=300 /><img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726082045415.png" height=300/>
 
 产生TCP ACK的建议 [RFC 1122, RFC 2581]
 | 接收方的事件 | TCP接收方动作 |
@@ -614,7 +618,9 @@ TCP：重传
 | 能部分或完全填充接收数据间隔的报文段到达 | 若该报文段起始于间隔(gap)的低端，则立即发送ACK（给确认并反映下一段的需求）。 |
 
 快速重传（3个冗余ACK触发的重发）
-    <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726083307463.png" style="zoom:80%"/>
+
+<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726083307463.png" style="zoom:80%"/>
+
 - 超时周期往往太长：
     - 在重传丢失报文段之前的延时太长
 - 通过重复的ACK来检测报文段丢失
@@ -628,6 +634,7 @@ TCP：重传
         - 收到第3，4个该段的ack，表示接收方收到该段之后的2、3个乱序段，有非常大的可能性为段丢失了
 
 三重ACK接收后的快速重传
+
 <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726083418896.png" style="zoom:80%" />
 
 #### 3.5.3 流量控制
@@ -641,7 +648,7 @@ TCP流量控制
 - 发送方限制未确认(“in-flight”)字节的个数小于等于接收方发送过来的 rwnd 值
 - 保证接收方不会被淹没
 - 假设TCP接收方丢弃乱序的报文段，则缓存中的可用的空间：
-  $$ RcvWindow = RcvBuffer - [LastByteRcvd - LastByteRead]$$
+  $RcvWindow = RcvBuffer - [LastByteRcvd - LastByteRead]$
   
   <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726115906902.png" style="zoom:60%"/>
 
@@ -665,7 +672,8 @@ TCP流量控制
     - 报文乱序
     - 相互看不到对方
     - 2次握手的失败场景：
-        <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726121120744.png"/>
+      
+      <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726121120744.png"/>
 
 解决方案：TCP **3次握手**（变化的初始序号+双方确认对方的序号）
 - 第一次：client-->server：客户端一方的初始序号 $x$
@@ -752,7 +760,7 @@ TCP：关闭连接（连接释放）：**4次挥手**
 - Q：当 $\lambda_{in}^{'}$ 、 $\lambda_{in}$ 增加时，会发生什么？    
     A：当红色的 $\lambda_{in}^{'}$ 增加时，所有到来的蓝色分组都在最上方的队列中丢弃了，蓝色吞吐->0
 
-<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726131141125.png" /><img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726131409102.png" style="zoom:143.7%"/>
+<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726131141125.png" height=200/><img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20210726131409102.png" height=200 />
 
 又一个拥塞的代价：当分组丢失时，任何“关于这个分组的上游传输能力”都被浪费了，严重时导致整个网络死锁
 
