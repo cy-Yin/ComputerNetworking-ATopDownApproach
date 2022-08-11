@@ -504,9 +504,9 @@ IPv6头部(Cont)
 
 隧道(Tunneling)
 
-<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20211001153500951.png" style="zoom:80%"/>      
+<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20211001153500951.png" width=400/>      
 <br>
-<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20211001153521591.png" style="zoom:78.6%"/>
+<img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20211001153521591.png" width=400/>
 
 IPv6：应用
 - Google估计：8%的客户通过IPv6访问谷歌服务
@@ -579,7 +579,7 @@ A2：无法完成（在原有体系下只有使用新的路由选择算法，而
 
 <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20211001160622576.png" style="zoom:56%"/>
 
-Q3：如果需要w对蓝色的和红色的流量采用不同的路由，怎么办？
+Q3：如果需要w对蓝色的和红色的流量采用不同的路由，怎么办？       
 A3：无法操作（基于目标的转发，采用LS，DV路由）
 
 SDN特点
