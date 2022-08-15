@@ -42,7 +42,7 @@
 - 或是 链路带宽的倒数
 - 或是 拥塞情况的倒数
 
-$$ Cost Of Path (x_1, x_2, x_3, ... , x_p) = c(x_1, x_2) + c(x_2, x_3) + ... + c(x_{p-1}, x_p)$$ 
+$$ \text{Cost of path } (x_1, x_2, x_3, ... , x_p) = c(x_1, x_2) + c(x_2, x_3) + ... + c(x_{p-1}, x_p) $$ 
 
 最优化原则(optimality principle)
 - 汇集树(sink tree)
