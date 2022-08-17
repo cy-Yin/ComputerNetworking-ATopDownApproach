@@ -181,8 +181,8 @@ Internet校验和
 <img src="http://knight777.oss-cn-beijing.aliyuncs.com/img/image-20211002225357330.png" style="zoom:60%"/>
 
 CRC例子
-- 需要： $\text{D} *2^r \text{ XOR R} = n\text{G}$
-- 等价于： $\text{D} *2^r = n\text{G } \text{XOR R} $
+- 需要： $\text{D} * 2^r \text{ XOR R} = n\text{G}$
+- 等价于： $\text{D} * 2^r = n\text{G } \text{XOR R} $
 - 等价于：两边同除G，得到余数R
     $$R = \text{remainder}[\frac{\text{D} * 2^r}{\text{G}}]$$
     其中 remainder 表示余数运算，当余数R不足r位时进行补0
@@ -306,7 +306,7 @@ b.1 时隙ALOHA
 - 任何一个节点的成功概率是 $N * p(1-p)^{N-1}$
 - $N$ 个节点的最大效率：求出使 $f(P) = N * p(1-p)^{N-1}$ 最大的 $p^{ * }$
 - 代入 $p^{ * }$ 得到最大 $f(p^{ * }) = N * p^{ * }(1-p^{ * })^{N-1}$ 
-- $N$ 为无穷大时的极限为 $1/e=0.37$ ，即最好情况：信道利用率 $37\%$
+- $N$ 为无穷大时的极限为 $1/e=0.37$ ，即最好情况：信道利用率 $37$ %
 
 b.2 纯ALOHA（非时隙）：数据帧一形成立即发送
 - 无时隙ALOHA：简单、无须节点间在时间上同步
@@ -316,16 +316,18 @@ b.2 纯ALOHA（非时隙）：数据帧一形成立即发送
     - 和当前帧冲突的区间（其他帧在此区间开始传输）增大了一倍
 
 纯ALOHA的效率
+
 $$
 \begin{split}
 P(\text{指定节点成功}) &= P(\text{节点传输}) \times \\ 
 &\quad P(\text{其它节点在 $[t_0-1, t_0]$ 不传}) \times \\ 
-&\quad P(\text{其它节点在 $[t_0, t_0+1不传]$ }) \\ 
+&\quad P(\text{其它节点在 $[t_0, t_0+1\text{不传}]$ }) \\ 
 &= p(1-p)^{N-1}(1-p)^{N-1} \\ 
 &= p(1-p)^{2(N-1)}
 \end{split}
 $$
-选择最佳的 $p$ 且 $N$ 趋向无穷大时，效率为 $1/(2e) = 17.5\%$ ，效率比时隙ALOHA更差了！
+
+选择最佳的 $p$ 且 $N$ 趋向无穷大时，效率为 $1/(2e) = 17.5$ %，效率比时隙ALOHA更差了！
 
 如何提升 纯ALOHA 的效率？CSMA
 
@@ -383,8 +385,10 @@ b.4 CSMA/CD(冲突检测) —— “边说边听”
 CSMA/CD效率
 - $t_{prop}$ 为LAN上2个节点的最大传播延迟
 - $t_{trans}$ 为传输最大帧的时间
-- 则：
-$$ efficiency = \frac{1}{1 + 5 * t_{prop} / t_{trans}} $$
+- 则：     
+    
+    $$ efficiency = \frac{1}{1 + 5 * t_{prop} / t_{trans}} $$
+
 - 效率变为 $1$ ：
     - 当 $t_{prop}$ 变成 $0$ 时
     - 当 $t_{trans}$ 变成无穷大时
@@ -633,8 +637,10 @@ ARP协议：在同一个LAN (网络)
 
 以太帧结构
 - 发送方适配器在以太网帧中封装IP数据报，或其他网络层协议数据单元
+
 |preamble|destination address|source address|type|data(payload)|CRC|
 |:---:|:---:|:---:|:---:|:---:|:---:|
+
 - 前导码：
 - 7B 10101010 + 1B 10101011
 - 用来同步接收方和发送方的时钟速率
@@ -769,7 +775,7 @@ Hub：集线器 （星形）
 - 当交换机收到一个帧：
     1. 记录进入链路，发送主机的MAC地址
     2. 使用目标MAC地址对交换表进行索引
-    3. ```c
+    3. ```
        if entry found for destination{   // 选择性转发
            if dest on segment from which frame arrived{
                drop the frame // 过滤
